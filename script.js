@@ -15,8 +15,15 @@
 // WHEN the password is generated
 // THEN the password is either displayed in an alert or written to the page
 
-
-const generateBtn = document.querySelector("#generate");
+const chars = [
+  'qwertyuiopasdfghjklzxcvbnm'.split(""),
+  'QWERTYUIOPASDFGHJKLZXCVBNM'.split(""),
+  '1234567890'.split(""),
+  '!@#$%^_+=][}{;:<>'.split("")
+];
+console.log(chars);
+cdrs = [];
+const butty = document.querySelectorAll(".card-footer")[0].children[0]
 
 function isNum (inp) {
   const nums = '1234567890'.split("");
@@ -35,13 +42,18 @@ function isNum (inp) {
 }
 
 function getLen() {
+  const len = prompt("What is the minimum length required?");
+  return Number(len)
+}
+
+function gLen() {
   const lenStr = prompt("What is the minimum length required?");
   if (isNum(lenStr)) {
     return Number(lenStr); 
   }
   else {
     alert("Invalid Input");
-    getLen();
+    gLen();
   }
 }
 
@@ -69,12 +81,26 @@ function getSpecials() {
   if (!passy.checkTypes()) {
     passy.lowers = true;
   }
-  return passy
+  console.log(passy);
+  if (passy.lowers) {cdrs.push(chars[0])};
+  if (passy.uppers) {cdrs.push(chars[1])};
+  if (passy.numbers) {cdrs.push(chars[2])};
+  if (passy.specials) {cdrs.push(chars[3])};
+  console.log(cdrs);
 }
 
 function gp() {
   const len = getLen();
-  const specials = getSpecials();
+  getSpecials();
+  let pw = '';
+  for (let i = 0; i < (len - cdrs.length); i++) {
+    let q = cdrs[Math.floor((cdrs.length)*Math.random())];
+    pw += q[Math.floor((q.length)*Math.random())];
+  }
+  for (let i of cdrs) {
+    pw += i[Math.floor((i.length)*Math.random())]
+  }
+  return pw;
 }
 
 
@@ -82,8 +108,8 @@ function write() {
   var password = gp();
   var passwordText = document.querySelector("#password");
   passwordText.value = password;
-
 }
 
-generateBtn.addEventListener("click", write())
+console.log(butty);
+butty.addEventListener("click", write())
 
